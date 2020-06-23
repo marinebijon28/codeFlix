@@ -23,7 +23,7 @@ Route::get('/signup', function() {
 
 Route::post('/signup', function() {
     request()->validate([
-        'email' => ['required'],
+        'email' => ['required'], ['email'],
         'password' => ['required'],
         'password_confirm'=> ['required'], ['confirmed'],
     ]);
@@ -31,6 +31,24 @@ Route::post('/signup', function() {
     'email' => request('email'),
     'password' => bcrypt(request('password')),
     ]);
-    
+
     return view('homeView');
+});
+
+Route::get('/login', function () {
+    return view('login');
+});
+
+Route::post('/login', function() {
+    request()->validate([
+        'email' => ['required'], ['email'],
+        'password' => ['required'],
+    ]);
+
+    auth()->attempt([
+        'email' => request('email'),
+        'password' => request('password'),
+    ]);
+
+    return view('dashboard');
 });

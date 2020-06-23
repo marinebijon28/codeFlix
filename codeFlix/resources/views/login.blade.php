@@ -274,10 +274,9 @@
             <div class="col-md-6 full-height bg-white">
                 <div class="auth-container">
                     <h2><span>Cod</span>'Flix</h2>
-                    <h3>Inscription</h3>
+                    <h3>Connexion</h3>
 
                     <form method="post" class="custom-form">
-
                         @csrf
                         <div class="form-group">
                             <label for="email">Adresse email</label>
@@ -296,30 +295,21 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="password_confirm">Confirmez votre mot de passe</label>
-                            <input type="password" name="password_confirm" id="password_confirm" class="form-control" />
-                            @if ($errors->has('password_confirm'))
-                                <p>{{$error->first('password_confirm')}}</p>
-                            @endif
-                        </div>
-
-                        <div class="form-group">
                             <div class="row">
                                 <div class="col-md-6">
                                     <input type="submit" name="Valider" class="btn btn-block bg-red" />
                                 </div>
                                 <div class="col-md-6">
-                                    <a href="login" class="btn btn-block bg-blue">Connexion</a>
+                                    <a href="signup" class="btn btn-block bg-blue">Inscription</a>
                                 </div>
                             </div>
                         </div>
-
                     </form>
                 </div>
             </div>
             <div class="col-md-6 full-height">
                 <div class="auth-container">
-                    <h1>Bienvenue sur Cod'Flix !</h1>
+                    <h1>Heureux de vous revoir !</h1>
                 </div>
             </div>
         </div>
@@ -351,4 +341,3 @@
 </body>
 
 </html>
-
