@@ -27,16 +27,18 @@ Route::post('/signup', function() {
         'password' => ['required'],
         'password_confirm'=> ['required'], ['confirmed'],
     ]);
-    \App\Users::Create([
-    'email' => request('email'),
-    'password' => hash('sha256', request('password')),
-    ]);
+    $user = new \App\Users();
+    $user->email = request('email');
+    $user->password = hash('sha256', request('password'));
+    $user->email_verified = str_replace('/', '', bcrypt(Str::random(16)));
 
+    $user->save();
+    $user->notify(new \App\Notifications\RegisteredUser());
     return view('homeView');
 });
 
 Route::get('/login', function () {
-    return view('login');
+    return view('/login');
 });
 
 Route::post('/login', function() {
@@ -51,4 +53,24 @@ Route::post('/login', function() {
     ]);
 
     return view('dashboard');
+});
+
+
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/confirm/{id}/{confirmed_email}', function($id, $verified_email) {
+    $user = App\Users::where('id', $id)->where('email_verified', $verified_email)->first();
+    if ($user)
+    {
+        $user->update(['verified_email', null]);
+        auth()->attempt([
+            'email' => $user->email,
+            'password' => $user->password,
+        ]);
+        return view('dashboard');
+    }
+    else
+        return view('homeView');
+
 });

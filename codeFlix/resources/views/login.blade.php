@@ -267,7 +267,6 @@
 
 </style>
 
-
 <div class="landscape">
     <div class="bg-black">
         <div class="row no-gutters">
