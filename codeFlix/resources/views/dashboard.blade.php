@@ -97,7 +97,7 @@
 
     footer {
         position: absolute;
-        bottom: 0;
+        bottom: -3500%;
 
         width: 100%;
 
@@ -150,6 +150,8 @@
     }
     #sidebar .sidebar-menu {
         padding: 0 25px 25px 25px;
+        min-height: 85%;
+        height : auto;
     }
     #sidebar.active {margin-left: -250px;}
     #sidebar.active .custom-menu {margin-right: -50px;}
@@ -243,6 +245,13 @@
     /***** Content Header *****/
 
     #content .header {
+        position: absolute;
+        top : -15.69em;
+        left: 15.6em;
+        width:90%;
+    }
+
+    #content .header {
         background: #454444;
         padding: 10px 25px;
         height: 60px;
@@ -264,6 +273,30 @@
         text-decoration: none;
     }
 
+    .row {
+        position: absolute;
+        right: 0;
+        top: -5%;
+    }
+    .content
+    {
+        margin-left : 20%;
+        margin-top: -40%;
+    }
+    .media {
+        width : 20%;
+        border : 1px solid black;
+        height : 30em;
+        margin: 5px 5px 5px 5px;
+        overflow: scroll;
+    }
+    .medias {
+        display: flex;
+        justify-content: center;
+        flex-direction: row;
+        flex-wrap: wrap;
+        width : 100%;
+    }
 
 </style>
 
@@ -293,24 +326,53 @@
             </ul>
         </div>
     </nav>
-
+</div>
     <!-- Page Content  -->
     <div id="content">
         <div class="header">
             <h2 class="title">Cod<span>'Flix</span></h2>
             <div class="toggle-menu d-block d-md-none">
                 <button type="button" id="sidebarCollapse" class="btn btn-primary">
-                    <i class="fas fa-bars"></i>
+                    <i class="fas fa-bars"></i>F
                     <span class="sr-only">Toggle Menu</span>
                 </button>
             </div>
         </div>
-        <div class="content p-4">
-        
+        <!-- search button  -->
+        <div class="row">
+            <div class="col-md-4 offset-md-8">
+                <form method="get">
+                    <div class="form-group has-btn">
+                        <input type="search" id="search" name="title" value="" class="form-control"
+                               placeholder="Rechercher un film ou une série">
+
+                        <button type="submit" class="btn btn-block bg-red">Valider</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+        <div class="content">
+            <?php
+            $results = \Illuminate\Support\Facades\DB::select('SELECT * FROM media');
+            ?>
+            <div class="medias">
+                @foreach ($results as $res)
+
+                    <div class="media">
+                        <div class="name">Nom : {{$res->title}}</div>
+                        <div class="type">Type : {{$res->type}}</div>
+                        <div class="status">Status : {{$res->status}}</div>
+                        <div class="release_date">Release date : {{$res->release_date}}</div>
+                        <div class="summary">Summary : {{$res->summary}}</div>
+                    </div>
+
+                @endforeach
+            </div>
         </div>
         <footer>Copyright Cod'Flix</footer>
-    </div>
-</div>
+
 
 <script src="public/lib/jquery/js/jquery-3.5.0.min"></script>
 <script src="public/lib/bootstrap/js/bootstrap.min.js"></script>

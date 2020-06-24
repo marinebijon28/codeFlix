@@ -23,13 +23,13 @@ Route::get('/signup', function() {
 
 Route::post('/signup', function() {
     request()->validate([
-        'email' => ['required'], ['email'],
+        'email' => ['required'], ['email'], ['unique'],
         'password' => ['required'],
         'password_confirm'=> ['required'], ['confirmed'],
     ]);
     \App\Users::Create([
     'email' => request('email'),
-    'password' => bcrypt(request('password')),
+    'password' => hash('sha256', request('password')),
     ]);
 
     return view('homeView');
