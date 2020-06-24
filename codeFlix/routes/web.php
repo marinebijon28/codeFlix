@@ -63,7 +63,9 @@ Route::get('/confirm/{id}/{confirmed_email}', function($id, $verified_email) {
     $user = App\Users::where('id', $id)->where('email_verified', $verified_email)->first();
     if ($user)
     {
-        $user->update(['verified_email', null]);
+        $user->email_verified = null;
+
+        $user->save();
         auth()->attempt([
             'email' => $user->email,
             'password' => $user->password,
@@ -74,3 +76,12 @@ Route::get('/confirm/{id}/{confirmed_email}', function($id, $verified_email) {
         return view('homeView');
 
 });
+
+
+
+Route::get('/mediaListView', function() {
+    $search = request('title');
+    $medias = \Illuminate\Support\Facades\DB::select('SELECT * FROM media where title LIKE "' . $search . '%"');
+    return view('/mediaListView')->with('medias', $medias)->with('search', $search);
+});
+

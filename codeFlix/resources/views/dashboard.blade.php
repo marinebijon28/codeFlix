@@ -96,8 +96,6 @@
     **********/
 
     footer {
-        position: absolute;
-        bottom: -3500%;
 
         width: 100%;
 
@@ -216,6 +214,20 @@
         }
         #sidebar.open {margin-left: 0 !important;}
 
+        .header {
+            margin-top: -20%;
+            margin-left: -50%;
+        }
+
+        .row {
+            margin-top: -40%;
+
+        }
+
+        .medias {
+            margin-top: -100%;
+        }
+
     }
 
     #sidebar .custom-menu {
@@ -245,9 +257,8 @@
     /***** Content Header *****/
 
     #content .header {
-        position: absolute;
-        top : -15.69em;
-        left: 15.6em;
+        margin-top: -51.3em;
+        margin-left: 17%;
         width:90%;
     }
 
@@ -273,22 +284,29 @@
         text-decoration: none;
     }
 
+    #content .header {
+        margin-top: -51.3em;
+        margin-left: 17%;
+        width: 90%;
+        background: red;
+    }
+
     .row {
-        position: absolute;
-        right: 0;
-        top: -5%;
+       margin-top : 3%;
+        margin-left: 75%;
     }
     .content
     {
         margin-left : 20%;
-        margin-top: -40%;
+        margin-top: 10%;
     }
     .media {
-        width : 20%;
+        width : 30%;
         border : 1px solid black;
         height : 30em;
         margin: 5px 5px 5px 5px;
         overflow: scroll;
+
     }
     .medias {
         display: flex;
@@ -297,6 +315,7 @@
         flex-wrap: wrap;
         width : 100%;
     }
+
 
 </style>
 
@@ -338,13 +357,14 @@
                 </button>
             </div>
         </div>
+    </div>
         <!-- search button  -->
         <div class="row">
             <div class="col-md-4 offset-md-8">
-                <form method="get">
+                <form method="get" action="/mediaListView">
                     <div class="form-group has-btn">
                         <input type="search" id="search" name="title" value="" class="form-control"
-                               placeholder="Rechercher un film ou une série">
+                               placeholder="Rechercher un film ou une série" />
 
                         <button type="submit" class="btn btn-block bg-red">Valider</button>
                     </div>
@@ -366,6 +386,7 @@
                         <div class="status">Status : {{$res->status}}</div>
                         <div class="release_date">Release date : {{$res->release_date}}</div>
                         <div class="summary">Summary : {{$res->summary}}</div>
+                        <a href="/media={{$res->id}}"><input type="button" value="Voir plus" /></a>
                     </div>
 
                 @endforeach

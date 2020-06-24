@@ -96,8 +96,6 @@
     **********/
 
     footer {
-        position: absolute;
-        bottom: 0;
 
         width: 100%;
 
@@ -264,66 +262,41 @@
         text-decoration: none;
     }
 
+    #sidebar {
+        height: 90%;
+    }
+    #content .header {
+        margin-top: -51.3em;
+        margin-left: 17%;
+        width: 90%;
+    }
+    .row {
+        margin-top : 3%;
+        margin-left: 75%;
+    }
+    .content
+    {
+        margin-left : 20%;
+        margin-top: 10%;
+    }
+    .media {
+        width : 30%;
+        border : 1px solid black;
+        height : 20em;
+        margin: 5px 5px 5px 5px;
+        overflow: scroll;
+
+    }
+    .medias {
+        display: flex;
+        justify-content: center;
+        flex-direction: row;
+        flex-wrap: wrap;
+        width : 80%;
+        margin-left : 20%;
+    }
 
 </style>
-
-
-<div class="landscape">
-    <div class="bg-black">
-        <div class="row no-gutters">
-            <div class="col-md-6 full-height bg-white">
-                <div class="auth-container">
-                    <h2><span>Cod</span>'Flix</h2>
-                    <h3>Inscription</h3>
-
-                    <form method="post" class="custom-form">
-                        @csrf
-                        <div class="form-group">
-                            <label for="email">Adresse email</label>
-                            <input type="email" name="email" value="" id="email" class="form-control" />
-                            @if ($errors->has('email'))
-                                <p>{{$error->first('email')}}</p>
-                            @endif
-                        </div>
-
-                        <div class="form-group">
-                            <label for="password">Mot de passe</label>
-                            <input type="password" name="password" id="password" class="form-control" />
-                            @if ($errors->has('password'))
-                                <p>{{$error->first('password')}}</p>
-                            @endif
-                        </div>
-
-                        <div class="form-group">
-                            <label for="password_confirm">Confirmez votre mot de passe</label>
-                            <input type="password" name="password_confirm" id="password_confirm" class="form-control" />
-                            @if ($errors->has('password_confirm'))
-                                <p>{{$error->first('password_confirm')}}</p>
-                            @endif
-                        </div>
-
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <input type="submit" name="Valider" class="btn btn-block bg-red" />
-                                </div>
-                                <div class="col-md-6">
-                                    <a href="login" class="btn btn-block bg-blue">Connexion</a>
-                                </div>
-                            </div>
-                        </div>
-
-                    </form>
-                </div>
-            </div>
-            <div class="col-md-6 full-height">
-                <div class="auth-container">
-                    <h1>Bienvenue sur Cod'Flix !</h1>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 <!DOCTYPE html>
 <html>
@@ -336,12 +309,72 @@
 
     <link href="public/css/partials/partials.css" rel="stylesheet" />
     <link href="public/css/layout/layout.css" rel="stylesheet" />
-
-
 </head>
 
 
 <body>
+<?php ob_start(); ?>
+<div class="wrapper d-flex align-items-stretch">
+    <nav id="sidebar">
+        <h2 class="title">Bienvenue</h2>
+        <div class="sidebar-menu">
+            <ul>
+                <li class="active"><a href="/CodFlix/">Médias</a></li>
+                <li><a href="#">Nous contacter</a></li>
+                <li><a href="index.php?action=logout">Me déconnecter</a></li>
+            </ul>
+        </div>
+    </nav>
+</div>
+
+<!-- Page Content  -->
+<div id="content">
+    <div class="header">
+        <h2 class="title">Cod<span>'Flix</span></h2>
+        <div class="toggle-menu d-block d-md-none">
+            <button type="button" id="sidebarCollapse" class="btn btn-primary">
+                <i class="fas fa-bars"></i>F
+                <span class="sr-only">Toggle Menu</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4 offset-md-8">
+        <form method="get" action="mediaListView">
+            <div class="form-group has-btn">
+                <input type="search" id="search" name="title" value="{{$search}}" class="form-control"
+                       placeholder="Rechercher un film ou une série">
+
+                <button type="submit" class="btn btn-block bg-red">Valider</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="medias">
+    <?php foreach( $medias as $media ): ?>
+    <div class="media">
+        <a class="item" href="/media=<?= $media->id; ?>">
+            <div class="video">
+                <div>
+                    <iframe allowfullscreen="" frameborder="0"
+                            src="<?= $media->trailer_url; ?>" ></iframe>
+                </div>
+            </div>
+        </a>
+        <div class="title"><?= $media->title; ?></div>
+        <div class="release_date"><?= $media->release_date; ?></div>
+        <div class="type">Type : {{$media->type}}</div>
+        <div class="status">Status : {{$media->status}}</div>
+        <div class="summary">Summary : {{$media->summary}}</div>
+        <a href="/media/{{$media->title}}"><input type="button" value="Regarder"/></a>
+    </div>
+    <?php endforeach; ?>
+</div>
+<footer>Copyright Cod'Flix</footer>
+
 
 <script src="public/lib/jquery/js/jquery-3.5.0.min"></script>
 <script src="public/lib/bootstrap/js/bootstrap.min.js"></script>
@@ -350,4 +383,3 @@
 </body>
 
 </html>
-
