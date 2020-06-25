@@ -1,7 +1,7 @@
 <style>
     /**********
-    * Home page rules
-    **********/
+     * Home page rules
+     **********/
 
     #home .banner {
         min-height: 100vh;
@@ -266,12 +266,12 @@
         height: 90%;
     }
     #content .header {
-        margin-top: -51.3em;
+        margin-top: -51.4em;
         margin-left: 17%;
         width: 90%;
     }
     .row {
-        margin-top : 3%;
+        margin-top : -50%;
         margin-left: 75%;
     }
     .content
@@ -295,24 +295,14 @@
         width : 80%;
         margin-left : 20%;
     }
+    .movie {
+        width : 80%;
+        margin-left : 20%;
+    }
 
 </style>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title>Cod'Flix</title>
 
-    <link href="public/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="public/lib/font-awesome/css/all.min.css" rel="stylesheet" />
-
-    <link href="public/css/partials/partials.css" rel="stylesheet" />
-    <link href="public/css/layout/layout.css" rel="stylesheet" />
-</head>
-
-
-<body>
 <?php ob_start(); ?>
 <div class="wrapper d-flex align-items-stretch">
     <nav id="sidebar">
@@ -327,6 +317,8 @@
     </nav>
 </div>
 
+
+
 <!-- Page Content  -->
 <div id="content">
     <div class="header">
@@ -340,38 +332,15 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="col-md-4 offset-md-8">
-        <form method="get" action="mediaListView">
-            <div class="form-group has-btn">
-                <input type="search" id="search" name="title" value="{{$search}}" class="form-control"
-                       placeholder="Rechercher un film ou une série">
 
-                <button type="submit" class="btn btn-block bg-red">Valider</button>
-            </div>
-        </form>
-    </div>
-</div>
-
-<div class="medias">
-    <?php foreach( $medias as $media ): ?>
-    <div class="media">
-        <a class="item" href="/media=<?= $media->id; ?>">
-            <div class="video">
-                <div>
-                    <iframe allowfullscreen="" frameborder="0"
-                            src="<?= $media->trailer_url; ?>" ></iframe>
-                </div>
-            </div>
-        </a>
-        <div class="title"><?= $media->title; ?></div>
-        <div class="release_date"><?= $media->release_date; ?></div>
-        <div class="type">Type : {{$media->type}}</div>
-        <div class="status">Status : {{$media->status}}</div>
-        <div class="summary">Summary : {{$media->summary}}</div>
-        <a href="/mediaWatch/{{$media->title}}"><input type="button" value="Regarder"/></a>
-    </div>
-    <?php endforeach; ?>
+<div class="content">
+    <form method="post">
+        @csrf
+        <label for="firstname">Nom de famille :</label><input type="text" name="firstname" id="firstname"/><br />
+        <label for="name">Prénom :</label><input type="text" name="name" id="name"/><br />
+        <label for="message">Message :</label><input type="text" name="message" id="message"><br />
+        <input type="submit" name="Valider" />
+    </form>
 </div>
 <footer>Copyright Cod'Flix</footer>
 
@@ -383,3 +352,4 @@
 </body>
 
 </html>
+

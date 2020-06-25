@@ -13,3 +13,5 @@ la fonction with dans certaines routes permet de faire passer des variables à l
 
 
 Pour les parametres de l'application c'est dans le .env on peut y retrouver le type de la database mais aussi un serveur smtp qui permet d'envoyer des vrais mails.
+
+Pour les envoient de mails la fonction pour envoyer dans le dossier routes et dans le fichier web et la vue qui sert aux mails est dans ressources puis dans views et dans emails.

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Mail;
 
 
 /*
@@ -90,7 +91,8 @@ Route::get('mediaWatch/{title}', function($title) {
         $results = \Illuminate\Support\Facades\DB::select('SELECT * FROM media where title LIKE "' . $title . '"');
     }else
         $results = \Illuminate\Support\Facades\DB::select('SELECT * FROM media where title LIKE "' . $search . '"');
-    return view('mediaWatch')->with('results', $results)->with('search', $search)->with('seasons', $numberSeason);
+    $res = \Illuminate\Support\Facades\DB::select('SELECT * FROM serie where name_serie LIKE "' . $search . '" AND number_season = ' . "1" . ' AND number_episode = ' . "1");
+    return view('mediaWatch')->with('results', $results)->with('search', $search)->with('seasons', $numberSeason)->with('movie', $res);
 });
 
 Route::post('mediaWatch/{title}', function($title) {
@@ -103,10 +105,9 @@ Route::post('mediaWatch/{title}', function($title) {
          $results = \Illuminate\Support\Facades\DB::select('SELECT * FROM media where title LIKE "' . $title . '"');
     else
         $results = \Illuminate\Support\Facades\DB::select('SELECT * FROM media where title LIKE "' . $search . '"');
-    var_dump($title);
-    if (!isset($title) && !isset($numberSeason) && !isset($numberSeason)){
+    if (isset($title) == true && isset($numberSeason) == true && isset($numberSeason) == true){
         $res = \Illuminate\Support\Facades\DB::select('SELECT * FROM serie where name_serie LIKE "' . $title . '" AND number_season = ' . $numberSeason . ' AND number_episode = ' . $numberEpisode);
-    }else if (isset($search) && !isset($numberSeason) && !isset($numberSeason))
+    }else if (isset($search) == true && isset($numberSeason) == true && isset($numberSeason) == true)
         $res = \Illuminate\Support\Facades\DB::select('SELECT * FROM serie where name_serie LIKE "' . $search . '" AND number_season = ' . $numberSeason . ' AND number_episode = ' . $numberEpisode);
     else
         $res = \Illuminate\Support\Facades\DB::select('SELECT * FROM serie where name_serie LIKE "' . $search . '" AND number_season = ' . "1" . ' AND number_episode = ' . "1");
@@ -118,4 +119,20 @@ Route::get('/mediaListView', function() {
     $search = request('title');
     $medias = \Illuminate\Support\Facades\DB::select('SELECT * FROM media where title LIKE "' . $search . '%"');
     return view('/mediaListView')->with('medias', $medias)->with('search', $search);
+});
+
+Route::get('/contactUs', function () {
+    return view('/contactUs');
+});
+
+Route::post('/contactUs', function() {
+    $firstname = request('firstname');
+    $name = request('name');
+    $body = request('message');
+
+    \Illuminate\Support\Facades\Mail::send('email.contactUs', ["firstname" => $firstname, "name" => $name, "body" => $body], function($mail) {
+        $mail->to("contact@codflix.com");
+
+    });
+    return view('/contactUs');
 });
