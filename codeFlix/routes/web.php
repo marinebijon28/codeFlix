@@ -23,7 +23,7 @@ Route::get('/signup', function() {
 });
 
 Route::get('/logout', function() {
-   return view('login');
+   return redirect('login');
 });
 
 Route::post('/signup', function() {
