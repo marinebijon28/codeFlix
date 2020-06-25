@@ -296,6 +296,7 @@
         margin-left : 20%;
     }
     .movie {
+        margin-top: 10%;
         width : 80%;
         margin-left : 20%;
     }
