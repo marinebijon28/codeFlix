@@ -22,6 +22,10 @@ Route::get('/signup', function() {
     return view('signup');
 });
 
+Route::get('/logout', function() {
+   return view('login');
+});
+
 Route::post('/signup', function() {
     request()->validate([
         'email' => ['required'], ['email'], ['unique'],
@@ -79,15 +83,20 @@ Route::get('/confirm/{id}/{confirmed_email}', function($id, $verified_email) {
 
 Route::get('mediaWatch/{title}', function($title) {
     $search = request('title');
+    $numberSeason = request('season');
+    if (!isset($numberSeason))
+        $numberSeason = 1;
     if (!isset($title)){
         $results = \Illuminate\Support\Facades\DB::select('SELECT * FROM media where title LIKE "' . $title . '"');
     }else
         $results = \Illuminate\Support\Facades\DB::select('SELECT * FROM media where title LIKE "' . $search . '"');
-    return view('mediaWatch')->with('results', $results)->with('search', $search);
+    return view('mediaWatch')->with('results', $results)->with('search', $search)->with('seasons', $numberSeason);
 });
 
 Route::post('mediaWatch/{title}', function($title) {
     $numberSeason = request('season');
+    if (!isset($numberSeason))
+        $numberSeason = 1;
     $numberEpisode = request('episode');
     $search = request('title');
     if (!isset($title))
