@@ -15,6 +15,9 @@ class CreateSerieTable extends Migration
     {
         Schema::create('serie', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('title');
+            $table->integer('duration');
+            $table->string('description');
             $table->string('name_serie');
             $table->integer('number_season');
             $table->integer('number_episode');

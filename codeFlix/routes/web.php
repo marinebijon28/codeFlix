@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -46,13 +47,12 @@ Route::post('/login', function() {
         'email' => ['required'], ['email'],
         'password' => ['required'],
     ]);
+    $res = \Illuminate\Support\Facades\DB::select('SELECT * FROM users where email = "' . request('email') . '" AND password = "' . hash('sha256', request('password')) .'"');
+    if (!empty($res))
+        return view('dashboard');
+    else
 
-    auth()->attempt([
-        'email' => request('email'),
-        'password' => request('password'),
-    ]);
-
-    return view('dashboard');
+        return view('login');
 });
 
 
@@ -66,10 +66,10 @@ Route::get('/confirm/{id}/{confirmed_email}', function($id, $verified_email) {
         $user->email_verified = null;
 
         $user->save();
-        auth()->attempt([
+        if (auth()->attempt([
             'email' => $user->email,
             'password' => $user->password,
-        ]);
+        ]))
         return view('dashboard');
     }
     else
@@ -77,6 +77,32 @@ Route::get('/confirm/{id}/{confirmed_email}', function($id, $verified_email) {
 
 });
 
+Route::get('mediaWatch/{title}', function($title) {
+    $search = request('title');
+    if (!isset($title)){
+        $results = \Illuminate\Support\Facades\DB::select('SELECT * FROM media where title LIKE "' . $title . '"');
+    }else
+        $results = \Illuminate\Support\Facades\DB::select('SELECT * FROM media where title LIKE "' . $search . '"');
+    return view('mediaWatch')->with('results', $results)->with('search', $search);
+});
+
+Route::post('mediaWatch/{title}', function($title) {
+    $numberSeason = request('season');
+    $numberEpisode = request('episode');
+    $search = request('title');
+    if (!isset($title))
+         $results = \Illuminate\Support\Facades\DB::select('SELECT * FROM media where title LIKE "' . $title . '"');
+    else
+        $results = \Illuminate\Support\Facades\DB::select('SELECT * FROM media where title LIKE "' . $search . '"');
+    var_dump($title);
+    if (!isset($title) && !isset($numberSeason) && !isset($numberSeason)){
+        $res = \Illuminate\Support\Facades\DB::select('SELECT * FROM serie where name_serie LIKE "' . $title . '" AND number_season = ' . $numberSeason . ' AND number_episode = ' . $numberEpisode);
+    }else if (isset($search) && !isset($numberSeason) && !isset($numberSeason))
+        $res = \Illuminate\Support\Facades\DB::select('SELECT * FROM serie where name_serie LIKE "' . $search . '" AND number_season = ' . $numberSeason . ' AND number_episode = ' . $numberEpisode);
+    else
+        $res = \Illuminate\Support\Facades\DB::select('SELECT * FROM serie where name_serie LIKE "' . $search . '" AND number_season = ' . "1" . ' AND number_episode = ' . "1");
+    return view('mediaWatch')->with('movie', $res)->with('results', $results)->with('search', $search)->with('seasons', $numberSeason);
+});
 
 
 Route::get('/mediaListView', function() {
@@ -84,4 +110,3 @@ Route::get('/mediaListView', function() {
     $medias = \Illuminate\Support\Facades\DB::select('SELECT * FROM media where title LIKE "' . $search . '%"');
     return view('/mediaListView')->with('medias', $medias)->with('search', $search);
 });
-

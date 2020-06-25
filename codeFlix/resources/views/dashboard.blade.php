@@ -288,7 +288,6 @@
         margin-top: -51.3em;
         margin-left: 17%;
         width: 90%;
-        background: red;
     }
 
     .row {
@@ -386,7 +385,7 @@
                         <div class="status">Status : {{$res->status}}</div>
                         <div class="release_date">Release date : {{$res->release_date}}</div>
                         <div class="summary">Summary : {{$res->summary}}</div>
-                        <a href="/media={{$res->id}}"><input type="button" value="Voir plus" /></a>
+                        <a href="/mediaWatch/{{$res->title}}"><input type="button" value="Voir plus" /></a>
                     </div>
 
                 @endforeach

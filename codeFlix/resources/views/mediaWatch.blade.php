@@ -266,12 +266,12 @@
         height: 90%;
     }
     #content .header {
-        margin-top: -51.3em;
+      margin-top: -9em;
         margin-left: 17%;
         width: 90%;
     }
     .row {
-        margin-top : 3%;
+        margin-top : -50%;
         margin-left: 75%;
     }
     .content
@@ -295,7 +295,10 @@
         width : 80%;
         margin-left : 20%;
     }
-
+    .movie {
+        width : 80%;
+        margin-left : 20%;
+    }
 </style>
 
 <!DOCTYPE html>
@@ -327,19 +330,6 @@
     </nav>
 </div>
 
-<!-- Page Content  -->
-<div id="content">
-    <div class="header">
-        <h2 class="title">Cod<span>'Flix</span></h2>
-        <div class="toggle-menu d-block d-md-none">
-            <button type="button" id="sidebarCollapse" class="btn btn-primary">
-                <i class="fas fa-bars"></i>F
-                <span class="sr-only">Toggle Menu</span>
-            </button>
-        </div>
-    </div>
-</div>
-
 <div class="row">
     <div class="col-md-4 offset-md-8">
         <form method="get" action="mediaListView">
@@ -353,26 +343,95 @@
     </div>
 </div>
 
-<div class="medias">
-    <?php foreach( $medias as $media ): ?>
-    <div class="media">
-        <a class="item" href="/media=<?= $media->id; ?>">
-            <div class="video">
-                <div>
-                    <iframe allowfullscreen="" frameborder="0"
-                            src="<?= $media->trailer_url; ?>" ></iframe>
-                </div>
-            </div>
-        </a>
-        <div class="title"><?= $media->title; ?></div>
-        <div class="release_date"><?= $media->release_date; ?></div>
-        <div class="type">Type : {{$media->type}}</div>
-        <div class="status">Status : {{$media->status}}</div>
-        <div class="summary">Summary : {{$media->summary}}</div>
-        <a href="/mediaWatch/{{$media->title}}"><input type="button" value="Regarder"/></a>
+<!-- Page Content  -->
+<div id="content">
+    <div class="header">
+        <h2 class="title">Cod<span>'Flix</span></h2>
+        <div class="toggle-menu d-block d-md-none">
+            <button type="button" id="sidebarCollapse" class="btn btn-primary">
+                <i class="fas fa-bars"></i>F
+                <span class="sr-only">Toggle Menu</span>
+            </button>
+        </div>
     </div>
-    <?php endforeach; ?>
 </div>
+
+@if (!empty($results))
+
+    @if ($results[0]->type == "Série")
+        <?php
+            $numberEpisode =1;
+            $numberSeason =1;
+        $numberSeason = \Illuminate\Support\Facades\DB::select('SELECT MAX(number_season) as maxi FROM serie WHERE name_serie LIKE "' . $results[0]->title .'"');
+        $numberSeason= $numberSeason[0]->maxi;
+        ?>
+        <form method="post" >
+@csrf
+            <div class="medias">
+                <label for="season">Saisons :
+                    <select name="season" id="season">
+                        @for($i = 1; $i <= $numberSeason; $i++)
+                                <option value="{{$i}}">{{$i}}</option>
+                        @endfor
+                    </select>
+                </label>
+                <div class="submit">
+                    <input type="submit" name="charger le nombre d'épisode"/>
+                </div>
+               <?php
+                $numberEpisode = \Illuminate\Support\Facades\DB::select('SELECT max(number_episode) as maxi From serie where name_serie LIKE "' . $results[0]->title. '" AND  number_season = ' . $seasons);
+                $numberEpisode = $numberEpisode[0]->maxi;
+                ?>
+                <label for="episode">Episode :
+                    <select name="episode" id="episode">
+                        @for($i = 1; $i <= $numberEpisode; $i++)
+                            <option value="{{$i}}">{{$i}}</option>
+                        @endfor
+                    </select>
+                </label>
+                <div class="submit">
+                    <input type="submit" name="charger épisode"/>
+                </div>
+
+                @if (isset($movie))
+                    <div class="movie">
+                        <div class="title">{{$movie[0]->title}}</div>
+                        <div class="duration">{{$movie[0]->duration}}</div>
+                        <div class="description">{{$movie[0]->description}}</div>
+                            <div class="video">
+                                <div>
+                                    <iframe allowfullscreen="" frameborder="0"
+                                            src="<?= $movie[0]->url_episode; ?>" ></iframe>
+                                </div>
+                            </div>
+                    </div>
+                @endif
+            </div>
+        </form>
+
+        {{-- <div class="medias">
+       <?php foreach( $medias as $media ): ?>
+           <div class="media">
+               <a class="item" href="/media=<?= $media->id; ?>">
+                   <div class="video">
+                       <div>
+                           <iframe allowfullscreen="" frameborder="0"
+                                   src="<?= $media->trailer_url; ?>" ></iframe>
+                       </div>
+                   </div>
+               </a>
+               <div class="title"><?= $media->title; ?></div>
+               <div class="release_date"><?= $media->release_date; ?></div>
+               <div class="type">Type : {{$media->type}}</div>
+               <div class="status">Status : {{$media->status}}</div>
+               <div class="summary">Summary : {{$media->summary}}</div>
+               <a href="/media/{{$media->title}}"><input type="button" value="Regarder"/></a>
+           </div>
+       <?php endforeach; ?>--}}
+    @else
+            <h1>Film</h1>
+    @endif
+@endif
 <footer>Copyright Cod'Flix</footer>
 
 
