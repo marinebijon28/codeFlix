@@ -14,19 +14,31 @@ use Illuminate\Support\Facades\Mail;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+/**
+ * @return view first view
+ */
 Route::get('/', function () {
     return view('homeView');
 });
 
+/**
+ * @return view sign up
+ */
 Route::get('/signup', function() {
     return view('signup');
 });
 
+/**
+ * @return logout
+ */
 Route::get('/logout', function() {
    return redirect('login');
 });
 
+/**
+ * treatment of informtations for inscription
+ * @return view first view
+ */
 Route::post('/signup', function() {
     request()->validate([
         'email' => ['required'], ['email'], ['unique'],
@@ -43,10 +55,17 @@ Route::post('/signup', function() {
     return view('homeView');
 });
 
+/**
+ * @return view log in
+ */
 Route::get('/login', function () {
     return view('/login');
 });
 
+/**
+ * test if exist in database
+ * @return if exist return view dashboard or view login
+ */
 Route::post('/login', function() {
     request()->validate([
         'email' => ['required'], ['email'],
@@ -60,10 +79,10 @@ Route::post('/login', function() {
         return view('login');
 });
 
-
-
-Route::get('/home', 'HomeController@index')->name('home');
-
+/**
+ * verified email link if verified il test to log in
+ * @return if login return view dashboard or login
+ */
 Route::get('/confirm/{id}/{confirmed_email}', function($id, $verified_email) {
     $user = App\Users::where('id', $id)->where('email_verified', $verified_email)->first();
     if ($user)
@@ -82,6 +101,10 @@ Route::get('/confirm/{id}/{confirmed_email}', function($id, $verified_email) {
 
 });
 
+/**
+ * recovered all informations for the view
+ * @return view mediaWatch
+ */
 Route::get('mediaWatch/{title}', function($title) {
     $search = request('title');
     $numberSeason = request('season');
@@ -95,6 +118,11 @@ Route::get('mediaWatch/{title}', function($title) {
     return view('mediaWatch')->with('results', $results)->with('search', $search)->with('seasons', $numberSeason)->with('movie', $res);
 });
 
+
+/**
+ * recovered all informations for the view
+ * @return view mediaWatch
+ */
 Route::post('mediaWatch/{title}', function($title) {
     $numberSeason = request('season');
     if (!isset($numberSeason))
@@ -114,17 +142,27 @@ Route::post('mediaWatch/{title}', function($title) {
     return view('mediaWatch')->with('movie', $res)->with('results', $results)->with('search', $search)->with('seasons', $numberSeason);
 });
 
-
+/**
+ * recovered the title of movie
+ * @return view mediaWatch
+ */
 Route::get('/mediaListView', function() {
     $search = request('title');
     $medias = \Illuminate\Support\Facades\DB::select('SELECT * FROM media where title LIKE "' . $search . '%"');
     return view('/mediaListView')->with('medias', $medias)->with('search', $search);
 });
 
+/**
+ * @return view contact us
+ */
 Route::get('/contactUs', function () {
     return view('/contactUs');
 });
 
+/**
+ * recovered als informations for the view
+ * @return view contact us
+ */
 Route::post('/contactUs', function() {
     $firstname = request('firstname');
     $name = request('name');

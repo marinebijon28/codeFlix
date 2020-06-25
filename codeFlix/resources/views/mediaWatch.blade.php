@@ -396,7 +396,7 @@
                 @if (isset($movie))
                     <div class="movie">
                         <div class="title">{{$movie[0]->title}}</div>
-                        <div class="duration">{{$movie[0]->duration}}</div>
+                        <div class="duration"><?php echo str_replace(':', 'h', $movie[0]->duration)?></div>
                         <div class="description">{{$movie[0]->description}}</div>
                             <div class="video">
                                 <div>
@@ -408,28 +408,24 @@
                 @endif
             </div>
         </form>
-
-        {{-- <div class="medias">
-       <?php foreach( $medias as $media ): ?>
-           <div class="media">
-               <a class="item" href="/media=<?= $media->id; ?>">
-                   <div class="video">
-                       <div>
-                           <iframe allowfullscreen="" frameborder="0"
-                                   src="<?= $media->trailer_url; ?>" ></iframe>
-                       </div>
-                   </div>
-               </a>
-               <div class="title"><?= $media->title; ?></div>
-               <div class="release_date"><?= $media->release_date; ?></div>
-               <div class="type">Type : {{$media->type}}</div>
-               <div class="status">Status : {{$media->status}}</div>
-               <div class="summary">Summary : {{$media->summary}}</div>
-               <a href="/media/{{$media->title}}"><input type="button" value="Regarder"/></a>
-           </div>
-       <?php endforeach; ?>--}}
     @else
-            <h1>Film</h1>
+        <?php
+            $movie = \Illuminate\Support\Facades\DB::select('SELECT * FROM movie WHERE title LIKE"' . $results[0]->title . '"');
+
+            ?>
+        @if (isset($movie))
+            <div class="movie">
+                <div class="title">{{$movie[0]->title}}</div>
+                <div class="duration"><?php echo str_replace(':', 'h', $movie[0]->duration)?></div>
+                <div class="description">{{$movie[0]->description}}</div>
+                <div class="video">
+                    <div>
+                        <iframe allowfullscreen="" frameborder="0"
+                                src="<?= $movie[0]->url_episode; ?>" ></iframe>
+                    </div>
+                </div>
+            </div>
+        @endif
     @endif
 @endif
 <footer>Copyright Cod'Flix</footer>
