@@ -264,7 +264,7 @@
 
     #content .header {
         background: #454444;
-        padding: 10px 25px;
+        padding: 80px 25px;
         height: 60px;
 
         display: flex;

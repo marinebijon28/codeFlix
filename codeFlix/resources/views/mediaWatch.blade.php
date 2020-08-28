@@ -242,7 +242,7 @@
 
     #content .header {
         background: #454444;
-        padding: 10px 25px;
+        padding: 50px 25px;
         height: 60px;
 
         display: flex;
@@ -397,7 +397,7 @@
                 @if (isset($movie))
                     <div class="movie">
                         <div class="title">{{$movie[0]->title}}</div>
-                        <div class="duration"><?php echo str_replace(':', 'h', $movie[0]->duration)?></div>
+                        <div class="duration"><?php echo str_replace(':', 'm', $movie[0]->duration)?></div>
                         <div class="description">{{$movie[0]->description}}</div>
                             <div class="video">
                                 <div>
